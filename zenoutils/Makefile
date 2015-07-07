@@ -1,0 +1,25 @@
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=zenoutils
+PKG_VERSION:=0.0.1
+PKG_RELEASE=1
+
+
+PKG_MAINTAINER:=Kevin Mahoney <kevin.mahoney@zenotec.net>
+PKG_LICENSE:=CLOSED
+PKG_LICENSE_FILES:=COPYING
+
+
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=ssh://git@galaxy/srv/git/zenoutils.git
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+PKG_SOURCE_VERSION:=90954cdaf897d3576bea3d5915d3ac43f5bc859e
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+
+PKG_INSTALL:=1
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSION)
+
+include $(INCLUDE_DIR)/package.mk
+
+
