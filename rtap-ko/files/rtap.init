@@ -1,0 +1,77 @@
+#!/bin/sh /etc/rc.common
+
+START=80
+APP=rtap.ko
+
+mon0_create() {
+    echo -ne "Creating 'mon0'..."
+    iw phy0 interface add mon0 type monitor >& /dev/null
+    ifconfig mon0 up >& /dev/null
+    echo "...[OK]"
+    return 0
+}
+
+mon0_remove() {
+    echo -ne "Removing 'mon0'..."
+    ifconfig mon0 down >& /dev/null
+    iw dev mon0 del >& /dev/null
+    echo "...[OK]"
+    return 0
+}
+
+mon0_exists() {
+    iw dev | grep -q mon0
+}
+
+start() {
+    echo -ne "Starting ${APP}..."
+    if [ ! -d /proc/rtap ]; then
+        echo "...[FAIL]"
+        exit 1
+    fi
+    if ! mon0_exists; then
+        mon0_create
+    fi
+    if [ -e /etc/rtap/devices ] && [ -e /proc/rtap/devices ]; then
+        for line in `cat /etc/rtap/devices`; do
+            echo -n ${line} > /proc/rtap/devices
+        done
+    fi
+    if [ -e /etc/rtap/listeners ] && [ -e /proc/rtap/listeners ]; then
+        for line in `cat /etc/rtap/listeners`; do
+            echo -n ${line} > /proc/rtap/listeners
+        done
+    fi
+    if [ -e /etc/rtap/filters ] && [ -e /proc/rtap/filters ]; then
+        for line in `cat /etc/rtap/filters`; do
+            echo -n ${line} > /proc/rtap/filters
+        done
+    fi
+    echo "...[OK]"
+}
+
+stop() {
+    echo -ne "Stopping ${APP}..."
+    if [ ! -d /proc/rtap ]; then
+        echo "...[FAIL]"
+        exit 1
+    fi
+    if mon0_exists; then
+        mon0_remove
+    fi
+    if [ -e /proc/rtap/devices ]; then
+        echo -n - > /proc/rtap/devices
+    fi
+    if [ -e /proc/rtap/listeners ]; then
+        echo -n - > /proc/rtap/listeners
+    fi
+    if [ -e /proc/rtap/filters ]; then
+        echo -n - > /proc/rtap/filters
+    fi
+    echo "...[OK]"
+}
+
+restart() {
+    stop
+    start
+}
