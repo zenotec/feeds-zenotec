@@ -22,4 +22,22 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSI
 
 include $(INCLUDE_DIR)/package.mk
 
+define Package/zenoutils/Default
+  DEPENDS:=+boost
+  URL:=http://github.com/zenotec
+endef
+
+define Package/zenoutils
+  $(call Package/zenoutils/Default)
+  SECTION:=utils
+  CATEGORY:=Utilities
+  TITLE:=ZenoUtilities
+  DEPENDS+=+libboost
+endef
+
+define Package/zenoutils/description
+  Embedded software stack and utilities
+endef
+
+$(eval $(call BuildPackage,zenoutils))
 
