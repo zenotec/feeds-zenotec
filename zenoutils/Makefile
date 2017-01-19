@@ -46,10 +46,21 @@ define Build/Configure
 	$(call Build/Configure/Default)
 endef
 
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include
+	$(CP) -a \
+		$(PKG_INSTALL_DIR)/usr/include/zeno \
+		$(1)/usr/include
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/libzutils.so* \
+		$(1)/usr/lib/
+endef
+
 define Package/zenoutils/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libzutils.so \
+		$(PKG_INSTALL_DIR)/usr/lib/libzutils.so* \
 		$(1)/usr/lib/
 endef
 
