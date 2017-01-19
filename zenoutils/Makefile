@@ -12,32 +12,45 @@ PKG_LICENSE_FILES:=COPYING
 
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=ssh://git@github.com:zenotec/common_zenoutils.git
-PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=890d37a50ca3b22a0a29e3ab7606e96dcd009b70
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE_URL:=git@github.com:zenotec/common_zenoutils.git
+PKG_SOURCE_VERSION:=ec02bdabef7ade38e2be3e22c05c6a5c1ab0afb1
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.bz2
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
 PKG_INSTALL:=1
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_BUILD_PARALLEL:=1
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_SOURCE_SUBDIR)
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/zenoutils/Default
-  DEPENDS:=+boost
-  URL:=http://github.com/zenotec
-endef
-
 define Package/zenoutils
-  $(call Package/zenoutils/Default)
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=ZenoUtilities
-  DEPENDS+=+libboost
+  TITLE:=Zeno Utilities
+  DEPENDS:=+boost-libs
+  URL:=http://github.com/zenotec
 endef
 
 define Package/zenoutils/description
   Embedded software stack and utilities
 endef
 
-$(eval $(call BuildPackage,zenoutils))
+CONFIGURE_PATH = build
+CONFIGURE_CMD = ../configure
+MAKE_PATH = build
 
+define Build/Configure
+	( cd $(PKG_BUILD_DIR); ./autogen.sh )
+	$(call Build/Configure/Default)
+endef
+
+define Package/zenoutils/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/lib/libzutils.so \
+		$(1)/usr/lib/
+endef
+
+$(eval $(call BuildPackage,zenoutils))
