@@ -21,6 +21,8 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_SOURCE_SUBDIR)
+PKG_BUILD_DEPENDS:=libuuid
+
 PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
@@ -29,7 +31,8 @@ define Package/zenoutils
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=Zeno Utilities
-  DEPENDS:=+boost-libs
+  DEPENDS:=+boost-libs +libuuid +libpthread +librt $(CXX_DEPENDS)
+  PROVIDES:=libzutils
   URL:=http://github.com/zenotec
 endef
 
@@ -49,18 +52,18 @@ endef
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
 	$(CP) -a \
-		$(PKG_INSTALL_DIR)/usr/include/zeno \
+		$(PKG_INSTALL_DIR)/usr/include/zutils \
 		$(1)/usr/include
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libzutils.so* \
+		$(PKG_INSTALL_DIR)/usr/lib/libzutils.{a,so*} \
 		$(1)/usr/lib/
 endef
 
 define Package/zenoutils/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libzutils.so* \
+		$(PKG_INSTALL_DIR)/usr/lib/libzutils.{a,so*} \
 		$(1)/usr/lib/
 endef
 
