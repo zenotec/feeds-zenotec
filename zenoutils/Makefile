@@ -28,8 +28,9 @@ PKG_FIXUP:=autoreconf
 include $(INCLUDE_DIR)/package.mk
 
 define Package/zenoutils
-  SECTION:=utils
-  CATEGORY:=Utilities
+  SECTION:=libs
+  CATEGORY:=Libraries
+  SUBMENU:=Middleware
   TITLE:=Zeno Utilities
   DEPENDS:=+boost-libs +libuuid +libpthread +librt $(CXX_DEPENDS)
   PROVIDES:=libzutils
