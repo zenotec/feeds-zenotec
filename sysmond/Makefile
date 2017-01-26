@@ -13,7 +13,7 @@ PKG_LICENSE_FILES:=COPYING
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git@github.com:zenotec/zenoponics_sysmond.git
-PKG_SOURCE_VERSION:=7965e77ac35b102c24c81deea35a61d633feccb2
+PKG_SOURCE_VERSION:=a93bcda93d90bc84799ba94fc856b6f01dca380e
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.bz2
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
@@ -21,7 +21,7 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_SOURCE_SUBDIR)
-PKG_BUILD_DEPENDS:=libzutils
+PKG_BUILD_DEPENDS:=zenoutils
 
 PKG_FIXUP:=autoreconf
 
@@ -31,7 +31,7 @@ define Package/sysmon
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=System Monitor
-  DEPENDS:=libzutils
+  DEPENDS:=+zenoutils
   URL:=http://github.com/zenotec
 endef
 
@@ -49,6 +49,10 @@ define Build/Configure
 endef
 
 define Package/sysmon/install
+	$(INSTALL_DIR) $(1)/etc
+	$(CP) \
+		./files/sysmond.conf \
+		$(1)/etc/sysmond.conf
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/sysmond \

@@ -21,7 +21,7 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_SOURCE_SUBDIR)
-PKG_BUILD_DEPENDS:=libuuid
+PKG_BUILD_DEPENDS:=boost libuuid
 
 PKG_FIXUP:=autoreconf
 
@@ -32,7 +32,7 @@ define Package/zenoutils
   CATEGORY:=Libraries
   SUBMENU:=Middleware
   TITLE:=Zeno Utilities
-  DEPENDS:=+boost-libs +libuuid +libpthread +librt $(CXX_DEPENDS)
+  DEPENDS:=+boost +libuuid +libpthread +librt $(CXX_DEPENDS)
   PROVIDES:=libzutils
   URL:=http://github.com/zenotec
 endef
