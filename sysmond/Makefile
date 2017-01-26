@@ -13,7 +13,7 @@ PKG_LICENSE_FILES:=COPYING
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git@github.com:zenotec/zenoponics_sysmond.git
-PKG_SOURCE_VERSION:=346c6beb006c496e116fdacc5ad98b264096b5ec
+PKG_SOURCE_VERSION:=a93bcda93d90bc84799ba94fc856b6f01dca380e
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.bz2
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
@@ -49,6 +49,10 @@ define Build/Configure
 endef
 
 define Package/sysmon/install
+	$(INSTALL_DIR) $(1)/etc
+	$(CP) \
+		./files/sysmond.conf \
+		$(1)/etc/sysmond.conf
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/sysmond \
