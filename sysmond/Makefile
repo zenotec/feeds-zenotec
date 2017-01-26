@@ -21,7 +21,7 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_SOURCE_SUBDIR)
-PKG_BUILD_DEPENDS:=libzutils
+PKG_BUILD_DEPENDS:=zenoutils
 
 PKG_FIXUP:=autoreconf
 
@@ -31,7 +31,7 @@ define Package/sysmon
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=System Monitor
-  DEPENDS:=libzutils
+  DEPENDS:=+zenoutils
   URL:=http://github.com/zenotec
 endef
 
