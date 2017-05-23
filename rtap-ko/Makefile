@@ -10,7 +10,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME := rtap
 PKG_VER:=0
-PKG_SUBVER:=7
+PKG_SUBVER:=10
 PKG_VERSION := $(PKG_VER).$(PKG_SUBVER)
 PKG_RELEASE := $(PKG_VERSION)
 
@@ -60,7 +60,7 @@ endef
 
 define KernelPackage/rtap/postinst
 #!/bin/sh
-insmod rtap.ko
+modprobe rtap
 endef
 
 define KernelPackage/rtap/install

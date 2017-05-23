@@ -1,36 +1,60 @@
 #!/bin/sh /etc/rc.common
 
 START=80
-APP=rtap.ko
+APP=rtap
 
-mon0_create() {
-    echo -ne "Creating 'mon0'..."
-    iw phy0 interface add mon0 type monitor >& /dev/null
-    ifconfig mon0 up >& /dev/null
+rtap_exists() {
+    lsmod | grep -q "${APP}"
+}
+
+rtap_insert() {
+	modprobe ${APP}
+}
+
+rtap_remove() {
+    rmmod ${APP}
+}
+
+phy_exists() {
+    iw dev | grep -q "phy#$1"
+}
+
+mon_exists() {
+    iw dev | grep -q "mon$1"
+}
+
+mon_create() {
+    if ! phy_exists $1; then
+        echo "PHY$1 does not exist....exiting"
+        return 1
+    fi
+    if mon_exists $1; then
+        echo "mon$1 already exists....exiting"
+        return 1
+    fi
+    echo -ne "Creating 'mon$1'..."
+    iw phy$1 interface add mon$1 type monitor >& /dev/null
+    ifconfig mon$1 up >& /dev/null
     echo "...[OK]"
     return 0
 }
 
-mon0_remove() {
-    echo -ne "Removing 'mon0'..."
-    ifconfig mon0 down >& /dev/null
-    iw dev mon0 del >& /dev/null
+mon_remove() {
+    if ! mon_exists $1; then
+        echo "mon$1 does not exist....exiting"
+        return 1
+    fi
+    echo -ne "Removing 'mon$1'..."
+    ifconfig mon$1 down >& /dev/null
+    iw dev mon$1 del >& /dev/null
     echo "...[OK]"
     return 0
-}
-
-mon0_exists() {
-    iw dev | grep -q mon0
 }
 
 start() {
     echo -ne "Starting ${APP}..."
-    if [ ! -d /proc/rtap ]; then
-        echo "...[FAIL]"
-        exit 1
-    fi
-    if ! mon0_exists; then
-        mon0_create
+    if ! rtap_exists; then
+        rtap_insert
     fi
     if [ -e /etc/rtap/devices ] && [ -e /proc/rtap/devices ]; then
         for line in `cat /etc/rtap/devices`; do
@@ -52,12 +76,9 @@ start() {
 
 stop() {
     echo -ne "Stopping ${APP}..."
-    if [ ! -d /proc/rtap ]; then
-        echo "...[FAIL]"
+    if ! rtap_exists; then
+        echo "${APP} not loaded....exiting"
         exit 1
-    fi
-    if mon0_exists; then
-        mon0_remove
     fi
     if [ -e /proc/rtap/devices ]; then
         echo -n - > /proc/rtap/devices
@@ -68,6 +89,7 @@ stop() {
     if [ -e /proc/rtap/filters ]; then
         echo -n - > /proc/rtap/filters
     fi
+    rtap_remove
     echo "...[OK]"
 }
 
