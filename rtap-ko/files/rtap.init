@@ -57,19 +57,24 @@ start() {
         rtap_insert
     fi
     if [ -e /etc/rtap/devices ] && [ -e /proc/rtap/devices ]; then
-        for line in `cat /etc/rtap/devices`; do
+        while read line; do
             echo -n ${line} > /proc/rtap/devices
-        done
+        done </etc/rtap/devices
     fi
     if [ -e /etc/rtap/listeners ] && [ -e /proc/rtap/listeners ]; then
-        for line in `cat /etc/rtap/listeners`; do
+        while read line; do
             echo -n ${line} > /proc/rtap/listeners
-        done
+        done </etc/rtap/listeners
+    fi
+    if [ -e /etc/rtap/rules ] && [ -e /proc/rtap/rules ]; then
+        while read line; do
+            echo -n ${line} > /proc/rtap/rules
+        done </etc/rtap/rules
     fi
     if [ -e /etc/rtap/filters ] && [ -e /proc/rtap/filters ]; then
-        for line in `cat /etc/rtap/filters`; do
+        while read line; do
             echo -n ${line} > /proc/rtap/filters
-        done
+        done </etc/rtap/filters
     fi
     echo "...[OK]"
 }
