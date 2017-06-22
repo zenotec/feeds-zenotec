@@ -10,12 +10,12 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME := rtap
 PKG_VER:=0
-PKG_SUBVER:=3.1
+PKG_SUBVER:=3.2
 PKG_VERSION := $(PKG_VER).$(PKG_SUBVER)
 PKG_RELEASE := $(PKG_VERSION)
 
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=92966d5126de301f5a52d8b7a2d112353fa417ba
+PKG_SOURCE_VERSION:=0262b4ea23bb20ab576c0d445b76caa1243e0a53
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://github.com/zenotec/rtap-ko.git
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
@@ -50,6 +50,7 @@ endef
 define KernelPackage/rtap/conffiles
 devices
 listeners
+rules
 filters
 endef
 
