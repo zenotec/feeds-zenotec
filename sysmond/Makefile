@@ -50,6 +50,8 @@ endef
 
 define Package/sysmon/install
 	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/sysmond.init $(1)/etc/init.d/sysmond
 	$(CP) \
 		./files/sysmond.conf \
 		$(1)/etc/sysmond.conf
