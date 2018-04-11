@@ -2,8 +2,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=zenoutils
-PKG_VERSION:=1.2.0
-PKG_RELEASE=2
+PKG_VERSION:=1.3.0
+PKG_RELEASE=3
 
 
 PKG_MAINTAINER:=Kevin Mahoney <kevin.mahoney@zenotec.net>
@@ -13,7 +13,7 @@ PKG_LICENSE_FILES:=COPYING
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git@github.com:zenotec/common_zenoutils.git
-PKG_SOURCE_VERSION:=3caef2be524772fbdfc9072c6af81a11c8a65e7f
+PKG_SOURCE_VERSION:=ff08af8e9b861b3b11c13cc2f9695b9fe31e2553
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_VERSION).tar.bz2
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
